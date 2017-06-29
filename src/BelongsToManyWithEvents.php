@@ -6,7 +6,7 @@
 
 */
 
-namespace App\Extensions\Relations;
+namespace NylonTechnology;
 
 use Exception;
 use Illuminate\Database\Eloquent\Model;
