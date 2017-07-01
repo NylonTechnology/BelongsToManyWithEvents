@@ -1,8 +1,8 @@
 {
     "name": "nylontechnology/belongstomanywithevents",
     "autoload": {
-        "psr-4" : {
-            "NylonTechnology\\BelongsToManyWithEvents\\" : "src"
+        "psr-0" : {
+            "NylonTechnology\\BelongsToManyWithEvents\\" : "src/"
         }
     }
 }
