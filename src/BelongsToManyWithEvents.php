@@ -1,41 +1,34 @@
 <?php
-
-/*
-
-		Derived from: https://gist.github.com/andyberry88/be3c45380568fc359cb61e00c4249704
-
-*/
-
 namespace NylonTechnology;
 
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany as EloquentBelongsToMany;
 
+/*
+
+		Derived from: https://gist.github.com/andyberry88/be3c45380568fc359cb61e00c4249704
+
+*/
+		
 class BelongsToManyWithEvents extends EloquentBelongsToMany {
 
 
-		/*
-				attach() fires for every relation added
-		*/
-		public function attach($id, array $attributes = [], $touch = true) {
-			$returnVal = parent::attach($id, $attributes, $touch);
+		public function attach($ids, array $attributes = [], $touch = true) {
+			$returnVal = parent::attach($ids, $attributes, $touch);
 
-			if ($id instanceof Model) {
-				$id = $id->getKey();
+			if ($ids instanceof Model) {
+				$ids = $ids->getKey();
 			}
-			if ($id instanceof Collection) {
-				$id = $id->modelKeys();
+			if ($ids instanceof Collection) {
+				$ids = $ids->modelKeys();
 			}
 
-			$this->fireParentEvent("attached.{$this->relationName}", $id, false);
+			$this->fireParentEvent("attached.{$this->relationName}", $ids, false);
 
 			return $returnVal;
 		}
 
-		/*
-				detach() fires only once for all removed relations
-		*/
 		public function detach($ids = [], $touch = true) {
 			$returnVal = parent::detach($ids, $touch);
 
