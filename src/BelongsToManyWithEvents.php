@@ -10,50 +10,55 @@ namespace NylonTechnology;
 
 use Exception;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany as EloquentBelongsToMany;
 
 class BelongsToManyWithEvents extends EloquentBelongsToMany {
 
 
-		public function attach($ids, array $attributes = [], $touch = true) {
-			$returnVal = parent::attach($ids, $attributes, $touch);
+		/*
+				attach() fires for every relation added
+		*/
+		public function attach($id, array $attributes = [], $touch = true) {
+			$returnVal = parent::attach($id, $attributes, $touch);
 
-			if ($ids instanceof EloquentCollection) {
-				$ids = $ids->modelKeys();
-			} else {
-				$ids = [$ids];
+			if ($id instanceof Model) {
+				$id = $id->getKey();
+			}
+			if ($id instanceof Collection) {
+				$id = $id->modelKeys();
 			}
 
-			foreach($ids as $id) {
-				$attached = $id instanceof Model ? $this->find($id = $id->getKey()) : $this->find($id);
-				if ($attached) {
-					$this->fireParentEvent("attached.{$this->relationName}", $attached, false);
-				}
-			}
+			$this->fireParentEvent("attached.{$this->relationName}", $id, false);
+
 			return $returnVal;
 		}
 
-
+		/*
+				detach() fires only once for all removed relations
+		*/
 		public function detach($ids = [], $touch = true) {
 			$returnVal = parent::detach($ids, $touch);
 
-			if ($ids instanceof EloquentCollection) {
+			if ($ids instanceof Model) {
+				$ids = $ids->getKey();
+			}
+			if ($ids instanceof Collection) {
 				$ids = $ids->modelKeys();
-			} else {
-				$ids = [$ids];
 			}
 
-			foreach($ids as $id) {
-				$id = $id instanceof Model ? $id->getKey() : $id;
-				$this->fireParentEvent("detached.{$this->relationName}", $id, false);
-			}
+      if (!(count($ids) == 1 && empty($ids[0]))) {
+				$this->fireParentEvent("detached.{$this->relationName}", $ids, false);
+      }
 
 			return $returnVal;
 		}
 
 
-
+		/*
+				sync() is a wrapper around attach() and detach() so generally you should 
+				only observe sync events or attach/detach, but not both unless you don't
+				mind redundant events.
+		*/
     public function sync($ids, $detaching = true) {
 			$returnVal = parent::sync($ids, $detaching);
 
