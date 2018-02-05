@@ -4,15 +4,8 @@ namespace NylonTechnology;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany as EloquentBelongsToMany;
-
-/*
-
-		Derived from: https://gist.github.com/andyberry88/be3c45380568fc359cb61e00c4249704
-
-*/
 		
 class BelongsToManyWithEvents extends EloquentBelongsToMany {
-
 
 		public function attach($ids, array $attributes = [], $touch = true) {
 			$returnVal = parent::attach($ids, $attributes, $touch);
@@ -46,12 +39,6 @@ class BelongsToManyWithEvents extends EloquentBelongsToMany {
 			return $returnVal;
 		}
 
-
-		/*
-				sync() is a wrapper around attach() and detach() so generally you should 
-				only observe sync events or attach/detach, but not both unless you don't
-				mind redundant events.
-		*/
     public function sync($ids, $detaching = true) {
 			$returnVal = parent::sync($ids, $detaching);
 
@@ -59,8 +46,6 @@ class BelongsToManyWithEvents extends EloquentBelongsToMany {
 
 			return $returnVal;
     }
-
-
 
 		protected function fireParentEvent($event, $records, $halt = true) {
 			$dispatcher = $this->getParent()->getEventDispatcher();
