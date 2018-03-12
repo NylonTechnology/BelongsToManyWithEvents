@@ -1,6 +1,10 @@
 # BelongsToManyWithEvents
 Override of Laravel Eloquent BelongsToMany relationship to fire events on attach/detach operations
 
+## Install
+
+    $ composer require nylontechnology/belongstomanywithevents
+    
 ## Usage
 
 1. Import into your model
