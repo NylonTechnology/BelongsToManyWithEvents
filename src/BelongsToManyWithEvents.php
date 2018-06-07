@@ -17,7 +17,7 @@ class BelongsToManyWithEvents extends EloquentBelongsToMany {
 				$ids = $ids->modelKeys();
 			}
 
-			$this->fireParentEvent("attached.{$this->relationName}", $ids, false);
+			$this->fireParentEvent("attached.{$this->getRelationName()}", $ids, false);
 
 			return $returnVal;
 		}
@@ -33,7 +33,7 @@ class BelongsToManyWithEvents extends EloquentBelongsToMany {
 			}
 
       if (!(count($ids) == 1 && empty($ids[0]))) {
-				$this->fireParentEvent("detached.{$this->relationName}", $ids, false);
+				$this->fireParentEvent("detached.{$this->getRelationName()}", $ids, false);
       }
 
 			return $returnVal;
@@ -42,7 +42,7 @@ class BelongsToManyWithEvents extends EloquentBelongsToMany {
     public function sync($ids, $detaching = true) {
 			$returnVal = parent::sync($ids, $detaching);
 
-			$this->fireParentEvent("synced.{$this->relationName}", $returnVal, false);
+			$this->fireParentEvent("synced.{$this->getRelationName()}", $returnVal, false);
 
 			return $returnVal;
     }
