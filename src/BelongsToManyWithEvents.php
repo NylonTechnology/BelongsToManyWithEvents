@@ -32,6 +32,8 @@ class BelongsToManyWithEvents extends EloquentBelongsToMany {
 				$ids = $ids->modelKeys();
 			}
 
+			if (!is_array($ids)) $ids = (array)$ids;
+			
       if (!(count($ids) == 1 && empty($ids[0]))) {
 				$this->fireParentEvent("detached.{$this->getRelationName()}", $ids, false);
       }
