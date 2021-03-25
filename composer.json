@@ -2,9 +2,6 @@
     "name": "nylontechnology/belongstomanywithevents",
     "description": "Override of Laravel Eloquent BelongsToMany relationship to fire events on attach/detach operations", 
     "license": "MIT",
-    "require": {
-        "laravel/framework": "5.*"
-    },
     "autoload": {
         "psr-0" : {
             "NylonTechnology\\BelongsToManyWithEvents" : "src"
